@@ -1,0 +1,31 @@
+ID: Airlines
+_schema-version: "2.1"
+description: CAPM Training Demo Project
+version: 0.0.1
+modules:
+  - name: Airlines-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 512M
+    requires:
+      - name: Airlines-db-hdi-container
+  - name: Airlines-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 512M
+      disk-quota: 512M
+    provides:
+      - name: srv_api
+        public: true
+        properties:
+          url: ${default-url}
+    requires:
+      - name: Airlines-db-hdi-container
+resources:
+  - name: Airlines-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
