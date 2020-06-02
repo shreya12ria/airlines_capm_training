@@ -6,7 +6,7 @@ entity Employees {
 	name : String;
   jobTitle : String;
 };
-
+	
 abstract entity Foo {
 	key ID	: Integer;
 };
