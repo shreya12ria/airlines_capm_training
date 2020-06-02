@@ -1,10 +1,12 @@
 namespace my.airlines;
-
+using { Country } from '@sap/cds/common';
 
 entity Employees {
-  key ID : Integer;
-	name : String;
-  jobTitle : String;
+  key ID		: Integer not null;
+	name		: String;
+	jobTitle	: String;
+	country		: Country;
+  
 };
 	
 abstract entity Foo {
