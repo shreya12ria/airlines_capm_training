@@ -12,19 +12,21 @@ abstract entity Foo {
 };
 
 
-entity Students {
-	key name	: PName;
-		contact : PContact;
-};
-
 type PName {
 	firstName	: String(100);
 	lastName	: String(100);
 };
 
 type PContact {
-	phone	: String(10);
-	email	: String(100);
+	phone	: String(10) default '123456789';
+	email	: String(100) default 'XYZ@in.bosch.com';
+};
+
+
+entity Students {
+	key name	: PName;
+		contact : PContact;
+		ID		: Integer default 0;
 };
 
 type FTiming {
@@ -43,6 +45,8 @@ entity Passengers {
 		DOB		: Date;
 		flight	: Association to Flights;
 };
+
+
 
 entity Flights {
 	key flightModel		: UUID;
