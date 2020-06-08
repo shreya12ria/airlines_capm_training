@@ -1,5 +1,5 @@
 ID: Airlines
-_schema-version: "2.1"
+_schema-version: '2.1'
 description: CAPM Training Demo Project
 version: 0.0.1
 modules:
@@ -21,11 +21,20 @@ modules:
       - name: srv_api
         public: true
         properties:
-          url: ${default-url}
+          url: '${default-url}'
+    requires:
+      - name: Airlines-db-hdi-container
+  - name: node_capm
+    type: nodejs
+    path: node_capm
+    provides:
+      - name: node_capm_api
+        properties:
+          url: '${default-url}'
     requires:
       - name: Airlines-db-hdi-container
 resources:
   - name: Airlines-db-hdi-container
     type: com.sap.xs.hdi-container
     properties:
-      hdi-container-name: ${service-name}
+      hdi-container-name: '${service-name}'
