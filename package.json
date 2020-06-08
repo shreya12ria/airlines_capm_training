@@ -30,7 +30,10 @@
         },
         "odata": {
             "version": "v4"
-        }
+        },
+        "features": {
+	        "localized": false
+		}
     },
     "files": [
         "db",

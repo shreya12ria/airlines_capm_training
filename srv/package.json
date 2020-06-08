@@ -25,6 +25,12 @@
                 "kind": "hana",
                 "model": "gen/csn.json"
             }
-        }
+        },
+        "odata": {
+            "version": "v4"
+        },
+         "features": {
+	        "localized": false
+		}
     }
 }

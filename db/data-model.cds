@@ -67,30 +67,89 @@ type FTiming {
 }; 
 
 
-
-entity Passengers {
-	key PNR 	: UUID;
-		name	: PName;
-		age		: Integer;
-		contact : PContact;
-		DOB		: Date;
-		flight	: Association to Flights;
+context ManagedAssociations {
+	entity Passengers {
+		key PNR 	: Integer;
+			name	: PName;
+			age		: Integer;
+			contact : PContact;
+			DOB		: Date;
+			// flight1,2,3 are to-one associations 
+			flight1	: Association to Flights;
+			flight2	: Association to Flights { flightModel };
+			flight3	: Association[1] to Flights { DOJ, flightName };
+			flight4	: Association to many Flights on flight4.passenger4 = $self;
+	};
+	
+	entity Flights {
+		key flightModel		: Integer;
+			DOJ				: Date;
+			flightName		: String(50);
+			src				: String(50);
+			dest			: String(50);
+			price			: Integer;
+			timing			: FTiming;
+			totalSeats		: Integer;
+			seatsAvailable	: Integer;
+			passenger1		: Association to many Passengers on passenger1.flight1 = $self;
+			passenger2		: Association to many Passengers on passenger2.flight2 = $self;
+			passenger3		: Association to many Passengers on passenger3.flight3 = $self;
+			passenger4		: Association to Passengers;
+	};
 };
 
 
 
-entity Flights {
-	key flightModel		: UUID;
-		DOJ				: Date;
-		flightName		: String(50);
-		src				: String(50);
-		dest			: String(50);
-		price			: Integer;
-		timing			: FTiming;
-		totalSeats		: Integer;
-		seatsAvailable	: Integer;
-		passengers		: Association to many Passengers on passengers.flight = $self;
+
+
+
+
+context ViewsDemo{
+
+	entity Managers {
+		key MID		: Integer;
+			mName	: String(50);
+			mDept	: String(10);
+	};
+	
+	entity  Employees{
+		key EID		: Integer;
+			eName	: String(50);
+			eDept	: String(10);
+	};
+	
+	entity InnerJoinView AS SELECT FROM Managers M INNER JOIN Employees E ON M.MID = E.EID {
+		key E.EID,
+			M.mName,
+			M.mDept
+	};
+	
+	entity LeftOuterJoinView AS SELECT FROM Employees E LEFT OUTER JOIN Managers M ON E.EID = M.MID {
+		key EID,
+			eName,
+			eDept,
+			mName,
+			mDept
+	};
+	
+
+	entity PassengersView AS SELECT FROM ManagedAssociations.Passengers	{
+		key PNR,
+			name.firstName as FirstName,
+			name.lastName as LastName,
+	};
+	
+	
+	entity ViewWithInputParam(PNR : Integer) AS SELECT FROM ManagedAssociations.Passengers P {
+		key PNR,
+			name,
+			age,
+			contact
+	} WHERE P.PNR = :PNR;
+
 };
+
+
 
 
 
@@ -129,7 +188,6 @@ context UnmanagedAssociations {
         // <...>
     };
 };
-
 
 
 
