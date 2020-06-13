@@ -43,3 +43,5 @@ service ViewsDemo {
 	entity ViewWithInputParam(PNR : Integer) as select from airlines.ViewsDemo.ViewWithInputParam(PNR : :PNR) {*};
 };
 
+
+

@@ -190,6 +190,32 @@ context UnmanagedAssociations {
 };
 
 
+	entity Flight {
+		key	flightName		: String(50);
+		key	DOJ				: Date;
+			src				: String(50);
+			dest			: String(50);
+			price			: Integer;
+			startTime		: Time;
+			endTime			: Time;
+			duration		: Integer;
+			totalSeats		: Integer;
+			seatsAvailable	: Integer;
+	};
+	
+	entity Passenger {
+		key PNR 		: Integer;
+			flightname	: String(50);
+			DOJ			: Date;
+			firstName	: String(100);
+			lastName	: String(100);
+			age			: Integer;
+			phone		: String(10) default '123456789';
+			email		: String(100) default 'XYZ@in.bosch.com';
+	};
+
+
+
 
 
 

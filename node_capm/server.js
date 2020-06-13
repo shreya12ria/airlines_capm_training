@@ -30,7 +30,7 @@ app.get('/read', (req, res) => {
 	console.log(source);
 	console.log(doj);
 	var connection=req.db;
-	let query="select * from MY_AIRLINES_FLIGHTS where src="+source+"and dest="+destination+"and doj="+doj+"";
+	let query="select * from MY_AIRLINES_FLIGHT where src="+source+"and dest="+destination+"and doj="+doj+"";
 	connection.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);
@@ -42,13 +42,13 @@ app.get('/read', (req, res) => {
 	});
 });
 
-var insert= function(conn,data){
+var insert= function(conn,req){
 	let pnr=Math.floor(Math.random() * 1000);
-	let model=data.flightModel;
-	let age=data.age;
-	let dob=data.dob;
-	let fname=data.fname,lname=data.lname,phone=data.phone,email=data.email;
-	let query="INSERT INTO MY_AIRLINES_PASSENGERS VALUES('"+pnr+"','"+model+"',"+age+",'"+dob+"','"+fname+"','"+lname+"','"+phone+"','"+email+"',' ')";
+	let flightname=req.flightname;
+	let age=req.age;
+	let doj=req.doj;
+	let fname=req.fname,lname=req.lname,phone=req.phone,email=req.email;
+	let query="INSERT INTO MY_AIRLINES_PASSENGER VALUES('"+pnr+"','"+flightname+"','"+doj+"','"+fname+"','"+lname+"','"+age+"','"+phone+"','"+email+"')";
 	conn.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);
@@ -57,13 +57,14 @@ var insert= function(conn,data){
 			console.log(err1 );
 		}
 	});
+	return pnr;
 }
 
 var update=function(conn,data,x){
-	let model=data.flightModel;
+	let flightname=data.flightname;
 	let doj=data.doj;
 	console.log(data)
-	let query="update MY_AIRLINES_FLIGHTS set seatsavailable=seatsavailable+"+x+" where flightmodel='"+model+"' and doj='"+doj+"'";
+	let query="update MY_AIRLINES_FLIGHT set seatsavailable=seatsavailable+"+x+" where flightname='"+flightname+"' and doj='"+doj+"'";
 	conn.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);
@@ -75,7 +76,7 @@ var update=function(conn,data,x){
 }
 var delete1=function(conn,data){
 	let pnr=data.pnr;
-		let query="delete from MY_AIRLINES_PASSENGERS where pnr='"+pnr+"'";
+		let query="delete from MY_AIRLINES_PASSENGER where pnr='"+pnr+"'";
 	conn.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);
@@ -87,13 +88,14 @@ var delete1=function(conn,data){
 }
 
 app.post('/book', (req, res) => {
-	let connection= req.db;
-	let data=req.body;
+	var connection= req.db;
+	var data=req.body;
 	
-	if(insert(connection,data)==1){
+	let pnr=insert(connection,data)
 	
 	update(connection,data,-1);
-	console.log("complete");}
+	console.log("complete");
+	res.send('your pnr='+pnr)
 });
 
 app.post('/cancel', (req, res) => {
