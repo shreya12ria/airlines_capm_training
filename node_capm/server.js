@@ -30,7 +30,7 @@ app.get('/read', (req, res) => {
 	console.log(source);
 	console.log(doj);
 	var connection=req.db;
-	let query="select * from MY_AIRLINES_FLIGHT where src="+source+"and dest="+destination+"and doj="+doj+"";
+	let query="select * from MY_AIRLINES_FLIGHT where src='"+source+"'and dest='"+destination+"'and doj='"+doj+"'";
 	connection.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);

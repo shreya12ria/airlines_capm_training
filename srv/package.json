@@ -6,7 +6,8 @@
         "@sap/cds": "^3.34.2",
         "express": "^4.17.1",
         "hdb": "^0.17.0",
-        "@sap/hana-client": "^2.4.196"
+        "@sap/hana-client": "^2.4.196",
+        "validator":"13.1.1"
     },
     "engines": {
         "node": "10.19.0",
