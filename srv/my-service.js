@@ -15,8 +15,7 @@ module.exports = cds.service.impl(srv => {
 		req.error(409,'invalid email')	
 	}
 	
-	var list
-	list=await cds.run( SELECT.from(Flight).where('flightName=',fName).and('DOJ=',DOJ))
+	var list=await cds.run( SELECT.from(Flight).where('flightName=',fName).and('DOJ=',DOJ))
 	
 	console.log(list.length)
 	if(list.length<1){
