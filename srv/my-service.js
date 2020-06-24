@@ -4,17 +4,17 @@ const validator = require('validator');
 module.exports = cds.service.impl(srv => {
 
 
-  srv.before ('CREATE', 'Passenger', async (req)=>{
-   	const Flight=srv.entities.Flight
+  srv.before ('CREATE', 'Passenger_details', async (req)=>{
+   	const Flight=srv.entities.Flight_search
 	//console.debug(Flight)
 	//console.debug(req.data);
 
-	let fName=req.data.flightname;
-	let DOJ=req.data.DOJ;
+
 	if(!validator.isEmail(req.data.email)){
 		req.error(409,'invalid email')	
 	}
-	
+	let fName=req.data.flightname;
+	let DOJ=req.data.DOJ;	
 	var list=await cds.run( SELECT.from(Flight).where('flightName=',fName).and('DOJ=',DOJ))
 	
 	console.log(list.length)
@@ -30,14 +30,14 @@ module.exports = cds.service.impl(srv => {
     //console.debug(a)
   })
   
-  srv.after('CREATE', 'Passenger',(Passenger,req)=>{
-  	    const Flight=srv.entities.Flight
+  srv.after('CREATE', 'Passenger_details',(Passenger_details,req)=>{
+  	    const Flight=srv.entities.Flight_search
   	   	let fName=req.data.flightname;
 		let DOJ=req.data.DOJ;
   	    cds.transaction(req) .run(UPDATE (Flight).set('seatsAvailable-=',1).where('flightName=',fName) .and('DOJ=',DOJ))
   })
   
-  	 srv.after ('READ', 'Flight', each => {
+  	 srv.after ('READ', 'Flight_search', each => {
 	 	let limit=(each.totalSeats)/2;
 	 	each.seatsAvailable< limit && _price(each)
 	 	//console.debug('this is first .after handler')
@@ -66,8 +66,8 @@ module.exports = cds.service.impl(srv => {
    	})
    
    srv.after('DELETE','Cancel_booking', async (Cancel_booking,req)=>{
-   	const Flight=srv.entities.Flight
-   	const Passenger=srv.entities.Passenger
+   	const Flight=srv.entities.Flight_search
+   	const Passenger=srv.entities.Passenger_details
 	//console.debug(Flight)
 	//console.debug(req.data);
 	var pnr=req.data.PNR
@@ -78,20 +78,11 @@ module.exports = cds.service.impl(srv => {
 	console.log(fName+'		'+DOJ)
     cds.run(UPDATE (Flight).set('seatsAvailable+=',1).where('flightName=',fName) .and('DOJ=',DOJ))
     // console.log(e)
-
+ //   var data='cancled sucessfully'
+	// req.reply(data)
   })
 
 })
-
-
-
-// async function reduce(req){
-// 	//console.debug(Flight)
-// 	console.debug(req.data);
-//   	cds.transaction(req) .run(()=>INSERT.into (Flight)
-// 	 .columns ('FLIGHTNAME', 'DOJ', 'src', 'dest','price','startTime','endTime','duration','totalSeats','seatsAvailable')
-// 	 .values ( '201', '2020-12-12', '101', '12',2000,'12:12:12','13:13:13',5,199,99))
-//   }
 
 
 

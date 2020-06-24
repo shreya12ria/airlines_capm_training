@@ -1,6 +1,5 @@
 "use strict";
 
-var http = require("http");
 var port = process.env.PORT || 3000;
 var express = require("express");
 var xsenv = require("@sap/xsenv");

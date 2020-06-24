@@ -2,8 +2,6 @@
 var express = require('express');
 var router = express.Router();
 
-
-
 router.get('/read', (req, res) => {
 	
 	let destination=req.query.dest;
@@ -98,7 +96,7 @@ router.post('/cancel', (req, res) => {
 			connection.exec(query, (err1, results) => {
 				if (!err1 && results>0) {
 					update(connection,data,1);
-					res.send(pnr+' cancled');
+					res.send(pnr+' canceled');
 				} else {
 					console.log(err1 );
 					res.send(err1);

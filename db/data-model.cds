@@ -210,8 +210,8 @@ context UnmanagedAssociations {
 			firstName	: String(100);
 			lastName	: String(100);
 			age			: Integer;
-			phone		: String(10) default '123456789';
-			email		: String(100) default 'XYZ@in.bosch.com';
+			phone		: String(10);
+			email		: String(100);
 	};
 
 
