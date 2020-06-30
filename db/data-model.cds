@@ -67,36 +67,36 @@ type FTiming {
 }; 
 
 
-context ManagedAssociations {
-	entity Passengers {
-		key PNR 	: Integer;
-			name	: PName;
-			age		: Integer;
-			contact : PContact;
-			DOB		: Date;
-			// flight1,2,3 are to-one associations 
-			flight1	: Association to Flights;
-			flight2	: Association to Flights { flightModel };
-			flight3	: Association[1] to Flights { DOJ, flightName };
-			flight4	: Association to many Flights on flight4.passenger4 = $self;
-	};
+// context ServiceDemo {
+// 	entity Passengers {
+// 		key PNR 	: Integer;
+// 			name	: PName;
+// 			age		: Integer;
+// 			contact : PContact;
+// 			DOB		: Date;
+// 			// flight1,2,3 are to-one associations 
+// 			flight1	: Association to Flights;
+// 			flight2	: Association to Flights { flightModel };
+// 			flight3	: Association[1] to Flights { DOJ, flightName };
+// 			flight4	: Association to many Flights on flight4.passenger4 = $self;
+// 	};
 	
-	entity Flights {
-		key flightModel		: Integer;
-			DOJ				: Date;
-			flightName		: String(50);
-			src				: String(50);
-			dest			: String(50);
-			price			: Integer;
-			timing			: FTiming;
-			totalSeats		: Integer;
-			seatsAvailable	: Integer;
-			passenger1		: Association to many Passengers on passenger1.flight1 = $self;
-			passenger2		: Association to many Passengers on passenger2.flight2 = $self;
-			passenger3		: Association to many Passengers on passenger3.flight3 = $self;
-			passenger4		: Association to Passengers;
-	};
-};
+// 	entity Flights {
+// 		key flightModel		: Integer;
+// 			DOJ				: Date;
+// 			flightName		: String(50);
+// 			src				: String(50);
+// 			dest			: String(50);
+// 			price			: Integer;
+// 			timing			: FTiming;
+// 			totalSeats		: Integer;
+// 			seatsAvailable	: Integer;
+// 			passenger1		: Association to many Passengers on passenger1.flight1 = $self;
+// 			passenger2		: Association to many Passengers on passenger2.flight2 = $self;
+// 			passenger3		: Association to many Passengers on passenger3.flight3 = $self;
+// 			passenger4		: Association to Passengers;
+// 	};
+// };
 
 
 
@@ -133,14 +133,14 @@ context ViewsDemo{
 	};
 	
 
-	entity PassengersView AS SELECT FROM ManagedAssociations.Passengers	{
+	entity PassengersView AS SELECT FROM ServiceDemo.Passengers	{
 		key PNR,
 			name.firstName as FirstName,
 			name.lastName as LastName,
 	};
 	
 	
-	entity ViewWithInputParam(PNR : Integer) AS SELECT FROM ManagedAssociations.Passengers P {
+	entity ViewWithInputParam(PNR : Integer) AS SELECT FROM ServiceDemo.Passengers P {
 		key PNR,
 			name,
 			age,
@@ -168,7 +168,7 @@ entity Projects {
 
 
 
-context UnmanagedAssociations {
+context UnmanagedAssociations{
     entity Employee {
         key id : Integer;
         officeId : Integer;
@@ -214,6 +214,30 @@ context UnmanagedAssociations {
 			email		: String(100);
 	};
 
+
+context ServiceDemo {
+	entity Passengers {
+		key PNR 	: Integer;
+			name	: PName;
+			age		: Integer;
+			contact : PContact;
+			DOB		: Date;
+		
+	};
+	
+	entity Flights {
+		key flightModel		: Integer;
+			DOJ				: Date;
+			flightName		: String(50);
+			src				: String(50);
+			dest			: String(50);
+			price			: Integer;
+			timing			: FTiming;
+			totalSeats		: Integer;
+			seatsAvailable	: Integer;
+			
+	};
+};
 
 
 
