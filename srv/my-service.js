@@ -9,7 +9,6 @@ module.exports = cds.service.impl(srv => {
 	//console.debug(Flight)
 	//console.debug(req.data);
 
-
 	if(!validator.isEmail(req.data.email)){
 		req.error(409,'invalid email')	
 	}
@@ -39,10 +38,12 @@ module.exports = cds.service.impl(srv => {
   
   	 srv.after ('READ', 'Flight_search', each => {
 	 	let limit=(each.totalSeats)/2;
+	 	// console.log(each)
 	 	each.seatsAvailable< limit && _price(each)
 	 	//console.debug('this is first .after handler')
 	 	var timeStart = new Date("01/01/2007 " + each.startTime).getHours();
 		var timeEnd = new Date("01/01/2007 " + each.endTime).getHours();
+		// console.log(timeStart)
 	 	let diff=(timeEnd-timeStart);
 	 	// console.debug(diff)
 	 	each.duration=diff
@@ -83,23 +84,4 @@ module.exports = cds.service.impl(srv => {
   })
 
 })
-
-
-
-// srv.before ('CREATE', 'Orders', _reduce)
-
-// async function _reduce (req) {
-//   const { Items: Passengers } = req.data
-
-//   return cds.transaction(req) .run (()=> Passengers.map (item =>
-//     UPDATE (Flights)
-//       .set ('seatsAvailable -=', item.seats)
-//       .where ('flightModel =', item.flightModel) .and ('seatsAvailable >=', item.seats)
-//   )).then (all => all.forEach ((affectedRows,i) => {
-//     if (affectedRows === 0) {
-//       req.error (409, `${Passengers[i].seats} seats not available #${Passengers[i].flightModel}`)
-//     }
-//   }))}
-
-//}
 

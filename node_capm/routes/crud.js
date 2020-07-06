@@ -9,7 +9,8 @@ router.get('/read', (req, res) => {
 	let doj=req.query.doj;
 
 	var connection=req.db;
-	let query="select * from MY_AIRLINES_FLIGHT where src='"+source+"'and dest='"+destination+"'and doj='"+doj+"'";
+	let columns='flightName,DOJ,src,dest,price,startTime,endTime,duration';
+	let query="select "+columns+" from MY_AIRLINES_FLIGHT where src='"+source+"'and dest='"+destination+"'and doj='"+doj+"'";
 	connection.exec(query, (err1, results) => {
 		if (!err1) {
 			console.log(results);
