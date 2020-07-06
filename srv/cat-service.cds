@@ -12,28 +12,28 @@ service UnmanagedAssociations {
 	entity Thing @readonly as projection on airlines.UnmanagedAssociations.Thing;
 };
 
-service ManagedAssociations {
-	entity Passengers @readonly as projection on airlines.ManagedAssociations.Passengers;
-	entity Flights @readonly as projection on airlines.ManagedAssociations.Flights;
+// service ManagedAssociations {
+// 	entity Passengers @readonly as projection on airlines.ManagedAssociations.Passengers;
+// 	entity Flights @readonly as projection on airlines.ManagedAssociations.Flights;
 	
-};
+// };
 
 
 service postFixProjection {
-	entity Passengers1 @readonly as select from airlines.ManagedAssociations.Passengers { PNR, name, age };  
+	entity Passengers1 @readonly as select from airlines.ServiceDemo.Passengers { PNR, name, age };  
 };
 
 service smartSelector {
-	entity Flights1 @readonly as select from airlines.ManagedAssociations.Flights { *, passenger4.PNR as PNR }; 
+	entity Flights1 @readonly as select from airlines.ServiceDemo.Flights { flightModel, DOJ AS DATE_OF_JOURNEY}; 
 };
 
 
 service inWhereClause {
-	entity Flights4 @readonly as select from airlines.ManagedAssociations.Flights where passenger4.PNR = 5834;
+	entity Flights4 @readonly as select from airlines.ServiceDemo.Flights where flightModel = 707;
 };
 
 service excludeClause {
-	entity Passengers4 @readonly as select from airlines.ManagedAssociations.Passengers {*} excluding { flight1 };	
+	entity Passengers4 @readonly as select from airlines.ServiceDemo.Passengers {*} excluding { contact };	
 };
 
 service ViewsDemo {
