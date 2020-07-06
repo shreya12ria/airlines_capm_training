@@ -19,7 +19,7 @@ app.use(
 app.use(bodyParser.json());
 
 app.use("/booking", require("./routes/logic"));
-
+app.use("/select", require("./routes/crud"));
 app.listen(port, function () {
 	console.log('myapp is using Node.js version: ' + process.version); 
 	console.log('myapp listening on port ' + port);
