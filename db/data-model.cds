@@ -156,14 +156,14 @@ context ViewsDemo{
 entity Engineers {
 	key ID			: Integer;
 		name		: PName;
-		project_ID	: Integer;  //> Foreign key
-		project		: Association to Projects on project.ID = project_ID;
+		project		: Association to Projects;
 };
 
 entity Projects {
 	key ID		: Integer;
 		title	: String(10);
 		desrc	: String(50);
+		engineers : Association to many Engineers on engineers.project = $self;
 };
 
 
@@ -213,6 +213,20 @@ context UnmanagedAssociations {
 			phone		: String(10);
 			email		: String(100);
 	};
+	
+
+type Amount {
+	value : Decimal(10,3);
+	currency : Currency;
+}	
+
+	
+entity Products {
+	key ID : Integer;
+	title : String(10) not null;
+	price : Amount;
+}
+
 
 
 

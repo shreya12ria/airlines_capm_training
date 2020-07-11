@@ -1,10 +1,13 @@
 using { my.airlines } from '../db/data-model';
 // using { my.airlines.UnmanagedAssociations as unmanagedassociation } from '../db/data-model';
 
-service Airlines {
-  entity Engineers @readonly as projection on airlines.Engineers;
-  entity Projects @readonly as projection on airlines.Projects;
-};
+service CQL {
+  entity PostfixProjections @readonly as projection on airlines.Engineers {ID, name.firstName};
+  entity SmartSelector @readonly as projection on airlines.Engineers { *, project.title as project };
+  entity PEselect @readonly as select ID, name, project.title from airlines.Engineers;
+  entity PEwhere @readonly as select from airlines.Engineers where project.title = 'Exide';
+  entity ExcludeClause @readonly as select from airlines.Engineers excluding { project };
+}; 
 
 service UnmanagedAssociations {
 	entity Room @readonly as projection on airlines.UnmanagedAssociations.Room;
