@@ -1,9 +1,19 @@
 const cds = require('@sap/cds')
 const validator = require('validator');
 
+let func=async ()=>{
+	let srv = await cds.connect.to ('admin')
+	const { Flight_admin } = srv.entities
+	let result= await srv.run (SELECT.from(Flight_admin))
+	console.log(result)
+	// console.log(srv.entities)
+}
+func()
+
 module.exports = cds.service.impl(srv => {
 
 
+	// console.log(srv)
   srv.before ('CREATE', 'Passenger_details', async (req)=>{
    	const Flight=srv.entities.Flight_search
 	//console.debug(Flight)
@@ -33,7 +43,7 @@ module.exports = cds.service.impl(srv => {
   	    const Flight=srv.entities.Flight_search
   	   	let fName=req.data.flightname;
 		let DOJ=req.data.DOJ;
-  	    cds.transaction(req) .run(UPDATE (Flight).set('seatsAvailable-=',1).where('flightName=',fName) .and('DOJ=',DOJ))
+  	    cds.run(UPDATE (Flight).set('seatsAvailable-=',1).where('flightName=',fName) .and('DOJ=',DOJ))
   })
   
   	 srv.after ('READ', 'Flight_search', each => {
