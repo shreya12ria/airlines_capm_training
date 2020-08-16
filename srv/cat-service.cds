@@ -4,8 +4,8 @@ using { my.airlines } from '../db/data-model';
 service CQL {
   entity PostfixProjections @readonly as projection on airlines.Engineers {ID, name.firstName};
   entity SmartSelector @readonly as select from airlines.Engineers { *, project.title as project };
-  entity Engineers @readonly as select from airlines.Engineers { * };
-  entity Projects @readonly as select from airlines.Projects { *, engineers : redirected to Engineers };
+  entity Engineers as select from airlines.Engineers { * };
+  entity Projects as select from airlines.Projects { *, engineers : redirected to Engineers };
   entity PEselect @readonly as select ID, name, project.title from airlines.Engineers;
   entity PEwhere @readonly as select from airlines.Engineers where project.title = 'Exide';
   entity ExcludeClause @readonly as select from airlines.Engineers excluding { project };
