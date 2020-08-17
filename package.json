@@ -11,7 +11,7 @@
         "@sap/hana-client": "^2.4.196"
     },
     "engines": {
-        "node": "10.19.0"
+        "node": "^10 || ^12"
     },
     "scripts": {
         "build": "cds build",
@@ -19,6 +19,9 @@
         "start": "cds run"
     },
     "cds": {
+    	"hana": {
+            "deploy-format": "hdbtable"
+        }, 
         "requires": {
             "db": {
                 "kind": "hana",

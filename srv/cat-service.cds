@@ -3,7 +3,9 @@ using { my.airlines } from '../db/data-model';
 
 service CQL {
   entity PostfixProjections @readonly as projection on airlines.Engineers {ID, name.firstName};
-  entity SmartSelector @readonly as projection on airlines.Engineers { *, project.title as project };
+  entity SmartSelector @readonly as select from airlines.Engineers { *, project.title as project };
+  entity Engineers as select from airlines.Engineers { * };
+  entity Projects as select from airlines.Projects { *, engineers : redirected to Engineers };
   entity PEselect @readonly as select ID, name, project.title from airlines.Engineers;
   entity PEwhere @readonly as select from airlines.Engineers where project.title = 'Exide';
   entity ExcludeClause @readonly as select from airlines.Engineers excluding { project };
@@ -40,10 +42,10 @@ service excludeClause {
 };
 
 service ViewsDemo {
-	entity PassengersView @readonly as projection on airlines.ViewsDemo.PassengersView;
+	entity PassengersView @readonly as projection on airlines.ViewsDemo.PassengersView; 
 	entity InnerJoinView @readonly as projection on airlines.ViewsDemo.InnerJoinView;
 	entity LeftOuterJoinView @readonly as projection on airlines.ViewsDemo.LeftOuterJoinView;
-	entity ViewWithInputParam(PNR : Integer) as select from airlines.ViewsDemo.ViewWithInputParam(PNR : :PNR) {*};
+	entity ViewWithInputParam(@required PNR : Integer) as select from airlines.ViewsDemo.ViewWithInputParam(PNR : :PNR) {*};
 };
 
 
