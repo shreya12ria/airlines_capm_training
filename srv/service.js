@@ -84,13 +84,18 @@ module.exports = cds.service.impl(srv => {
 	var pnr=req.data.PNR
 	var list
 	list=await cds.run( SELECT.from(Passenger).where('PNR=',pnr))
-	let fName=list[0].flightname;
+	let flightName=list[0].flightname;
+	let firstName=list[0].firstName;
 	let DOJ=list[0].DOJ;
-	console.log(fName+'		'+DOJ)
-    cds.run(UPDATE (Flight).set('seatsAvailable+=',1).where('flightName=',fName) .and('DOJ=',DOJ))
-    // console.log(e)
- //   var data='cancled sucessfully'
-	// req.reply(data)
+	// console.log(flightName+'		'+DOJ)
+	// console.log(list)
+    cds.run(UPDATE (Flight).set('seatsAvailable+=',1).where('flightName=',flightName) .and('DOJ=',DOJ))
+    
+    req.on('succeeded', () => {
+    srv.emit('cancelled', { flightName, pnr , firstName, DOJ })
+    console.log('Cancelled event was emitted when '+firstName+' cancelled ticket bearing PNR number '+pnr)
+    })
+
   })
 
 })
